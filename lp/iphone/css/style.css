@@ -1,0 +1,977 @@
+/* ==========================================================================
+   法人携帯の窓口 LP - style.css
+   モック忠実再現版（v9 拡大・余白最小化）
+   ========================================================================== */
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --navy: #061a3a;
+  --navy-deep: #051630;
+  --red: #d90012;
+  --red-bright: #ff2440;
+  --gold-light: #f8dc66;
+  --gold: #e4b82d;
+  --gold-base: #ddb02b;
+  --gold-deep: #c89419;
+  --white: #ffffff;
+  --bg-page: #061a3a;
+  --text-gray: #5a6b82;
+  --border-gray: #cfd9e6;
+  --notice-bg: #fff7e6;
+  --notice-border: #f0b429;
+  --notice-strong: #d71920;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--bg-page);
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+h1, h2, h3 { margin: 0; font-weight: 800; }
+p { margin: 0; }
+
+html { scroll-behavior: smooth; }
+
+/* ---------- Page Container ---------- */
+.page-bg {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: var(--bg-page);
+}
+
+.lp-wrapper {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--navy);
+  position: relative;
+}
+
+/* ==========================================================================
+   Header（電話＋フォームの2分割）
+   ========================================================================== */
+.header {
+  height: 56px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  position: relative;
+  z-index: 10;
+}
+
+.header-logo-link {
+  display: block;
+  line-height: 0;
+}
+
+.header-logo {
+  width: 148px;
+  height: auto;
+  display: block;
+}
+
+.header-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.header-action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: none;
+  background: var(--navy);
+  color: #fff;
+  font-family: inherit;
+  text-decoration: none;
+  transition: filter 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+.header-action:hover { filter: brightness(1.1); }
+.header-action:active { transform: translateY(1px); }
+
+.header-tel-action {
+  background: var(--navy);
+}
+
+.header-form-action {
+  background: linear-gradient(135deg, var(--red), var(--red-bright));
+  box-shadow: 0 3px 8px rgba(217, 0, 18, 0.32);
+  animation: headerFormPulse 2.5s ease-in-out infinite;
+}
+
+.header-form-action:hover {
+  animation-play-state: paused;
+}
+
+@keyframes headerFormPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 3px 8px rgba(217, 0, 18, 0.32);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 5px 14px rgba(217, 0, 18, 0.5);
+  }
+}
+
+/* アニメーションを無効にしたいユーザー向け（OS設定対応） */
+@media (prefers-reduced-motion: reduce) {
+  .cta-link,
+  .submit-btn,
+  .header-form-action {
+    animation: none !important;
+  }
+}
+
+.header-action-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.header-action-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.header-action-sub {
+  display: block;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 1px;
+  letter-spacing: 0;
+}
+
+/* ==========================================================================
+   FV - plan位置を下げてiPhoneを際立たせる（v14）
+   ========================================================================== */
+.fv {
+  position: relative;
+  width: 100%;
+  height: 499px;
+  background: var(--navy);
+  overflow: hidden;
+}
+
+/* 背景画像（plan中央あたりまで延長、デスクの広がりを強化） */
+.fv-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 378px;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 1;
+  display: block;
+}
+
+/* iPhone本体（200px維持・主役感を保持） */
+.fv-phone {
+  position: absolute;
+  top: 5px;
+  right: 12px;
+  width: 200px;
+  height: auto;
+  z-index: 2;
+  transform: rotate(0);
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.32));
+}
+
+/* メインコピー画像 */
+.fv-text {
+  position: absolute;
+  top: 30px;
+  left: 8px;
+  width: 260px;
+  height: auto;
+  z-index: 3;
+}
+
+/* 月額料金バナー（+20px下、デスク領域確保） */
+.monthly-banner {
+  position: absolute;
+  top: 325px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 5;
+  filter: drop-shadow(0 5px 14px rgba(0, 0, 0, 0.38));
+}
+
+/* メインCTA（plan直下0px） */
+.cta-link {
+  position: absolute;
+  top: 420px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 6;
+  display: block;
+  transition: filter 0.15s ease, transform 0.1s ease;
+  animation: ctaHeartbeat 2.2s ease-in-out infinite;
+}
+
+.cta-link:hover {
+  filter: brightness(1.06);
+  animation-play-state: paused;
+}
+.cta-link:active { transform: translateY(1px); }
+
+@keyframes ctaHeartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+.cta-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
+}
+
+/* ==========================================================================
+   選ばれるポイント
+   ========================================================================== */
+.benefits {
+  background: var(--navy);
+  padding: 0 12px 18px;
+}
+
+.benefit-title {
+  color: var(--gold);
+  font-size: 22px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1;
+  margin: 8px 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.06em;
+}
+
+.benefit-title::before,
+.benefit-title::after {
+  content: "";
+  display: inline-block;
+  width: 72px;
+  height: 1px;
+  background: var(--gold-base);
+  margin: 0 12px;
+}
+
+.benefit-main-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.benefit-sub-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.benefit-card {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.benefit-card.large {
+  height: 88px;
+  padding: 6px 3px 4px;
+}
+
+.benefit-card.small {
+  height: 68px;
+  padding: 5px 2px 3px;
+}
+
+.benefit-icon-large {
+  height: 34px;
+  width: auto;
+  margin: 0 auto 3px;
+  display: block;
+  object-fit: contain;
+}
+
+.benefit-icon-small {
+  height: 24px;
+  width: auto;
+  margin: 0 auto 2px;
+  display: block;
+  object-fit: contain;
+}
+
+.zero-yen-img {
+  height: 50px;
+  width: auto;
+  margin: 2px auto 0;
+  display: block;
+  object-fit: contain;
+}
+
+.benefit-small-text {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.benefit-red {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1.15;
+}
+
+.benefit-sub-title {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.25;
+}
+
+.benefit-sub-red {
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Form
+   ========================================================================== */
+.biz-form-wrap {
+  padding: 22px 14px 26px;
+  background: var(--navy);
+}
+
+.biz-form {
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px 16px 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+}
+
+.biz-form h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.form-lead {
+  text-align: center;
+  color: var(--text-gray);
+  margin: 6px 0 18px;
+  font-size: 13px;
+}
+
+.form-row { margin-bottom: 14px; }
+
+.form-row label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--navy);
+}
+
+.form-row label span,
+.form-row label em {
+  display: inline-block;
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.form-row label span { background: var(--red); }
+.form-row label em { background: #8793a3; }
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width: 100%;
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  padding: 11px 12px;
+  font-size: 16px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  color: var(--navy);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  border-color: #0a4ea3;
+  box-shadow: 0 0 0 3px rgba(10, 78, 163, 0.12);
+}
+
+.form-row textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.sole-notice {
+  background: var(--notice-bg);
+  border: 2px solid var(--notice-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 14px;
+  color: #2d2d2d;
+}
+
+.sole-notice strong {
+  display: block;
+  font-size: 14px;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.sole-notice p {
+  margin: 4px 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.sole-notice ul {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+
+.sole-notice li {
+  font-size: 12.5px;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.sole-notice .note {
+  color: var(--notice-strong);
+  font-weight: 700;
+}
+
+.submit-btn {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--red), var(--red-bright));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 15px;
+  margin-top: 8px;
+  box-shadow: 0 8px 18px rgba(217, 0, 18, 0.32);
+  transition: filter 0.15s ease;
+  animation: submitPulse 2.5s ease-in-out infinite;
+}
+
+.submit-btn:hover {
+  filter: brightness(1.05);
+  animation-play-state: paused;
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: none;
+}
+
+@keyframes submitPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 18px rgba(217, 0, 18, 0.32);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 12px 26px rgba(217, 0, 18, 0.50);
+  }
+}
+
+.bottom-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-gray);
+  margin: 12px 0 0;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  background: var(--navy-deep);
+  color: #fff;
+  padding: 22px 14px;
+  text-align: center;
+}
+
+.footer-logo {
+  height: 20px;
+  width: auto;
+  margin: 0 auto 12px;
+  filter: brightness(0) invert(1);
+}
+
+.footer-nav { margin-bottom: 10px; }
+
+.footer-nav a {
+  color: #fff;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.footer-copy {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Modal
+   ========================================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal[hidden] { display: none; }
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 27, 58, 0.6);
+}
+
+.modal-card {
+  position: relative;
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px 18px 18px;
+  max-width: 380px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(7, 27, 58, 0.35);
+}
+
+.modal-card h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy);
+  text-align: center;
+}
+
+.modal-lead {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-gray);
+  margin: 0 0 14px;
+}
+
+.modal-list {
+  margin: 0 0 16px;
+  padding: 12px 12px 8px;
+  background: #f6f9fc;
+  border-radius: 8px;
+}
+
+.modal-list dt {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-gray);
+  margin: 0 0 2px;
+}
+
+.modal-list dd {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 8px;
+  word-break: break-all;
+}
+
+.modal-list dd:last-child { margin-bottom: 0; }
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 10px;
+}
+
+.modal-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 8px;
+  font-size: 14px;
+  font-weight: 800;
+  transition: filter 0.15s ease;
+}
+
+.modal-btn-back {
+  background: #e3e8ef;
+  color: var(--navy);
+}
+
+.modal-btn-send {
+  background: linear-gradient(90deg, var(--red), var(--red-bright));
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(217, 0, 18, 0.28);
+}
+
+.modal-btn:hover { filter: brightness(1.05); }
+.modal-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* 電話ポップアップモーダル */
+.modal-card-tel {
+  text-align: center;
+  padding: 28px 22px 22px;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: var(--text-gray);
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-close-x:hover { color: var(--navy); }
+
+.tel-modal-lead {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-gray);
+  margin: 4px 0 18px;
+  font-weight: 700;
+}
+
+.tel-modal-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--red), var(--red-bright));
+  color: #fff !important;
+  padding: 16px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 16px rgba(217, 0, 18, 0.32);
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.tel-modal-cta:hover { filter: brightness(1.06); }
+.tel-modal-cta:active { transform: translateY(1px); }
+
+.tel-modal-cta svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.tel-modal-num {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+.tel-modal-hours {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+/* フォームエラー表示 */
+.form-error {
+  display: none;
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  background: #fff5f5;
+  border-left: 3px solid var(--red);
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  border-radius: 4px;
+}
+
+.form-error.show {
+  display: block;
+}
+
+.form-row input.error,
+.form-row select.error,
+.form-row textarea.error {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(217, 0, 18, 0.1);
+}
+
+/* ==========================================================================
+   Thanks Page
+   ========================================================================== */
+.site-header--simple {
+  height: 56px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+.site-header--simple .logo img {
+  height: 28px;
+  width: auto;
+}
+
+.thanks {
+  padding: 32px 16px 36px;
+  text-align: center;
+  background: #fff;
+}
+
+.thanks-check {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 18px;
+}
+
+.thanks-check svg { width: 100%; height: 100%; }
+
+.thanks-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+
+.thanks-text {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-gray);
+  margin: 0 0 22px;
+}
+
+.thanks-text strong {
+  color: var(--navy);
+  font-weight: 800;
+}
+
+.thanks-callback-note {
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--text-gray);
+  background: #fff7e6;
+  border: 1px solid #f0b429;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0 0 22px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.thanks-callback-note strong {
+  color: var(--red);
+  font-weight: 900;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.thanks-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 20px;
+  max-width: 260px;
+}
+
+.thanks-tel-box {
+  background: #f6f9fc;
+  border-radius: 12px;
+  padding: 16px 14px 14px;
+  margin: 0 0 22px;
+}
+
+.thanks-tel-lead {
+  font-size: 13px;
+  color: var(--text-gray);
+  margin: 0 0 6px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.thanks-tel-num {
+  display: inline-block;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+  margin: 0 0 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+.thanks-tel-hours {
+  font-size: 12px;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+.thanks-back-btn {
+  display: inline-block;
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 6px 14px rgba(7, 27, 58, 0.22);
+}
+
+/* ==========================================================================
+   Responsive 360px以下
+   ========================================================================== */
+@media (max-width: 360px) {
+  .header {
+    height: 50px;
+    padding: 0 8px;
+  }
+  .header-logo { width: 124px; }
+  .header-actions { gap: 4px; }
+  .header-action {
+    height: 38px;
+    padding: 0 7px;
+    gap: 4px;
+  }
+  .header-action-icon {
+    width: 14px;
+    height: 14px;
+  }
+  .header-action-label { font-size: 9.5px; }
+  .header-action-sub { font-size: 8px; }
+
+  .fv { height: 417px; }
+  .fv-bg { height: 316px; }
+  .fv-phone {
+    top: 5px;
+    right: 10px;
+    width: 168px;
+  }
+  .fv-text {
+    top: 25px;
+    left: 6px;
+    width: 215px;
+  }
+  .monthly-banner {
+    top: 271px;
+    left: 0;
+    width: 100%;
+  }
+  .cta-link {
+    top: 351px;
+    left: 0;
+    width: 100%;
+  }
+
+  .benefits {
+    padding: 0 10px 16px;
+  }
+  .benefit-title {
+    font-size: 19px;
+    margin: 6px 0 12px;
+  }
+  .benefit-title::before,
+  .benefit-title::after {
+    width: 58px;
+  }
+  .benefit-main-grid {
+    gap: 7px;
+    margin-bottom: 7px;
+  }
+  .benefit-sub-grid {
+    gap: 5px;
+  }
+  .benefit-card.large {
+    height: 76px;
+    padding: 5px 3px 4px;
+  }
+  .benefit-card.small {
+    height: 60px;
+    padding: 4px 2px 3px;
+  }
+  .benefit-icon-large { height: 28px; }
+  .benefit-icon-small { height: 22px; }
+  .zero-yen-img { height: 42px; }
+  .benefit-small-text { font-size: 10px; }
+  .benefit-red { font-size: 19px; }
+  .benefit-sub-title { font-size: 8.5px; }
+  .benefit-sub-red { font-size: 10px; }
+}
+
+/* PC幅 */
+@media (min-width: 431px) {
+  .lp-wrapper {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+  }
+}
