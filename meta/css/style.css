@@ -121,6 +121,31 @@ html { scroll-behavior: smooth; }
 .header-form-action {
   background: linear-gradient(135deg, var(--red), var(--red-bright));
   box-shadow: 0 3px 8px rgba(217, 0, 18, 0.32);
+  animation: headerFormPulse 2.5s ease-in-out infinite;
+}
+
+.header-form-action:hover {
+  animation-play-state: paused;
+}
+
+@keyframes headerFormPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 3px 8px rgba(217, 0, 18, 0.32);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 5px 14px rgba(217, 0, 18, 0.5);
+  }
+}
+
+/* アニメーションを無効にしたいユーザー向け（OS設定対応） */
+@media (prefers-reduced-motion: reduce) {
+  .cta-link,
+  .submit-btn,
+  .header-form-action {
+    animation: none !important;
+  }
 }
 
 .header-action-icon {
@@ -214,10 +239,19 @@ html { scroll-behavior: smooth; }
   z-index: 6;
   display: block;
   transition: filter 0.15s ease, transform 0.1s ease;
+  animation: ctaHeartbeat 2.2s ease-in-out infinite;
 }
 
-.cta-link:hover { filter: brightness(1.06); }
+.cta-link:hover {
+  filter: brightness(1.06);
+  animation-play-state: paused;
+}
 .cta-link:active { transform: translateY(1px); }
+
+@keyframes ctaHeartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
 
 .cta-img {
   width: 100%;
@@ -478,10 +512,29 @@ html { scroll-behavior: smooth; }
   margin-top: 8px;
   box-shadow: 0 8px 18px rgba(217, 0, 18, 0.32);
   transition: filter 0.15s ease;
+  animation: submitPulse 2.5s ease-in-out infinite;
 }
 
-.submit-btn:hover { filter: brightness(1.05); }
-.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.submit-btn:hover {
+  filter: brightness(1.05);
+  animation-play-state: paused;
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: none;
+}
+
+@keyframes submitPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 18px rgba(217, 0, 18, 0.32);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 12px 26px rgba(217, 0, 18, 0.50);
+  }
+}
 
 .bottom-note {
   text-align: center;
