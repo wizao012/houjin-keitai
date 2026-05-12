@@ -200,7 +200,7 @@ html { scroll-behavior: smooth; }
 .fv-phone {
   position: absolute;
   top: 5px;
-  right: 12px;
+  right: -8px;
   width: 200px;
   height: auto;
   z-index: 2;
@@ -270,7 +270,7 @@ html { scroll-behavior: smooth; }
 
 .benefit-title {
   color: var(--gold);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 900;
   text-align: center;
   line-height: 1;
@@ -278,17 +278,19 @@ html { scroll-behavior: smooth; }
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .benefit-title::before,
 .benefit-title::after {
   content: "";
   display: inline-block;
-  width: 72px;
+  width: 40px;
   height: 1px;
   background: var(--gold-base);
-  margin: 0 12px;
+  margin: 0 8px;
+  flex-shrink: 0;
 }
 
 .benefit-main-grid {
@@ -915,7 +917,7 @@ html { scroll-behavior: smooth; }
   .fv-bg { height: 316px; }
   .fv-phone {
     top: 5px;
-    right: 10px;
+    right: -6px;
     width: 168px;
   }
   .fv-text {
@@ -938,12 +940,14 @@ html { scroll-behavior: smooth; }
     padding: 0 10px 16px;
   }
   .benefit-title {
-    font-size: 19px;
+    font-size: 17px;
     margin: 6px 0 12px;
+    letter-spacing: 0.02em;
   }
   .benefit-title::before,
   .benefit-title::after {
-    width: 58px;
+    width: 30px;
+    margin: 0 6px;
   }
   .benefit-main-grid {
     gap: 7px;
