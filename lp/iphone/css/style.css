@@ -538,11 +538,25 @@ html { scroll-behavior: smooth; }
   }
 }
 
+.privacy-consent {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-gray);
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+
+.privacy-consent a {
+  color: var(--navy);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 .bottom-note {
   text-align: center;
   font-size: 11px;
   color: var(--text-gray);
-  margin: 12px 0 0;
+  margin: 6px 0 0;
 }
 
 /* ==========================================================================
@@ -562,12 +576,19 @@ html { scroll-behavior: smooth; }
   filter: brightness(0) invert(1);
 }
 
-.footer-nav { margin-bottom: 10px; }
+.footer-nav {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+}
 
 .footer-nav a {
   color: #fff;
   font-size: 12px;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 .footer-copy {
