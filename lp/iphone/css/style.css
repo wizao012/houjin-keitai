@@ -540,16 +540,18 @@ html { scroll-behavior: smooth; }
 
 .privacy-consent {
   text-align: center;
-  font-size: 12px;
+  font-size: 10.5px;
   color: var(--text-gray);
-  margin: 12px 0 0;
-  line-height: 1.6;
+  margin: 10px 0 0;
+  line-height: 1.4;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .privacy-consent a {
   color: var(--navy);
   text-decoration: underline;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .bottom-note {
@@ -992,6 +994,10 @@ html { scroll-behavior: smooth; }
   .benefit-red { font-size: 19px; }
   .benefit-sub-title { font-size: 8.5px; }
   .benefit-sub-red { font-size: 10px; }
+
+  .privacy-consent {
+    font-size: 9.5px;
+  }
 }
 
 /* PC幅 */
