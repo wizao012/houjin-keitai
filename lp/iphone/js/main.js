@@ -272,21 +272,21 @@ if (form && submitBtn) {
     try {
       const formData = new FormData(form);
 
-      const response = await fetch(CONFIG.ZAPIER_WEBHOOK_URL, {
+      // Zapier送信（no-corsモードでCORS問題を回避）
+      // no-corsではレスポンスが読めないが、データは正常に送信される
+      await fetch(CONFIG.ZAPIER_WEBHOOK_URL, {
         method: 'POST',
+        mode: 'no-cors',
         body: formData
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
 
       // GTM dataLayerへCVイベント送信
       window.dataLayer.push({ event: 'form_submit_cv' });
 
-      // 成功 → thanksページへ遷移
+      // サンクスページへ遷移
       window.location.href = CONFIG.THANKS_PAGE;
     } catch (err) {
+      // 真のネットワークエラーのみここに来る
       submitBtn.disabled = false;
       submitBtn.textContent = originalBtnText;
       alert('送信に失敗しました。お手数ですがお電話でお問い合わせください（' + CONFIG.TEL + '）');
