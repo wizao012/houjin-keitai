@@ -8,7 +8,16 @@ const CONFIG = {
   THANKS_PAGE: './thanks.html',
   TEL: '050-1791-6247',
   // GTM/広告計測用パラメータキー
-  PARAM_KEYS: ['src', 'camp', 'ag', 'ad', 'pl', 'lpv', 'gclid', 'fbclid', 'kw', 'mt']
+  PARAM_KEYS: [
+    // UTM標準パラメータ（GA4自動連携）
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+    // 配信面・追加情報
+    'placement', 'keyword', 'matchtype',
+    // クリックID（オフラインCVインポート用）
+    'gclid', 'fbclid',
+    // 独自パラメータ（手動メモ・既存互換）
+    'lpv', 'src', 'camp', 'ag', 'ad', 'pl', 'kw', 'mt'
+  ]
 };
 
 /* ---------- URLパラメータをhidden inputへ ---------- */
