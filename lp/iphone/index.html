@@ -128,14 +128,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="form-lead">必要事項をご入力ください。</p>
 
     <!-- URLパラメータ追跡（GTM/広告計測用） -->
+    <!-- UTM標準（GA4自動連携） -->
+    <input type="hidden" name="utm_source" id="trk-utm_source">
+    <input type="hidden" name="utm_medium" id="trk-utm_medium">
+    <input type="hidden" name="utm_campaign" id="trk-utm_campaign">
+    <input type="hidden" name="utm_term" id="trk-utm_term">
+    <input type="hidden" name="utm_content" id="trk-utm_content">
+    <!-- 配信面・追加情報 -->
+    <input type="hidden" name="placement" id="trk-placement">
+    <input type="hidden" name="keyword" id="trk-keyword">
+    <input type="hidden" name="matchtype" id="trk-matchtype">
+    <!-- クリックID（オフラインCVインポート用） -->
+    <input type="hidden" name="gclid" id="trk-gclid">
+    <input type="hidden" name="fbclid" id="trk-fbclid">
+    <!-- 独自パラメータ（手動メモ・既存互換） -->
+    <input type="hidden" name="lpv" id="trk-lpv">
     <input type="hidden" name="src" id="trk-src">
     <input type="hidden" name="camp" id="trk-camp">
     <input type="hidden" name="ag" id="trk-ag">
     <input type="hidden" name="ad" id="trk-ad">
     <input type="hidden" name="pl" id="trk-pl">
-    <input type="hidden" name="lpv" id="trk-lpv">
-    <input type="hidden" name="gclid" id="trk-gclid">
-    <input type="hidden" name="fbclid" id="trk-fbclid">
     <input type="hidden" name="kw" id="trk-kw">
     <input type="hidden" name="mt" id="trk-mt">
 
