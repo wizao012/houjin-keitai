@@ -28,6 +28,13 @@ const CONFIG = {
       const el = document.getElementById('trk-' + key);
       if (el) el.value = params.get(key) || '';
     });
+    
+    // LPパスを自動取得（サブディレクトリ判定用）
+    // 例: /lp/iphone/ → "iphone"、/lp/990yen/ → "990yen"
+    const lpPathEl = document.getElementById('trk-lp_path');
+    if (lpPathEl) {
+      lpPathEl.value = location.pathname || '';
+    }
   } catch (e) {}
 })();
 
