@@ -502,6 +502,148 @@ html { scroll-behavior: smooth; }
   font-weight: 700;
 }
 
+/* ==========================================================================
+   書類確認エリア（document-check）
+   ========================================================================== */
+.document-check {
+  background: var(--notice-bg);
+  border: 2px solid var(--notice-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 0 14px;
+  color: #2d2d2d;
+}
+
+.document-check-header strong {
+  display: block;
+  font-size: 14px;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.document-check p {
+  margin: 4px 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.document-list {
+  margin: 6px 0;
+  padding-left: 18px;
+}
+
+.document-list li {
+  font-size: 12.5px;
+  line-height: 1.7;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.document-check-question {
+  margin: 10px 0 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--navy);
+}
+
+.document-check-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.document-check-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1.5px solid var(--border-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.document-check-radio:hover {
+  border-color: var(--notice-border);
+  background: #fffdf2;
+}
+
+.document-check-radio input[type="radio"] {
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: var(--red);
+  flex-shrink: 0;
+}
+
+.document-check-radio input[type="radio"]:checked + span {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.document-check-radio:has(input[type="radio"]:checked) {
+  border-color: var(--red);
+  background: #fff4f5;
+}
+
+.document-check-deny {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #fff0f0;
+  border: 1.5px dashed var(--red);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   赤帯マーキー（流れるお知らせ）
+   ========================================================================== */
+.notice-bar {
+  width: 100%;
+  background: linear-gradient(90deg, #c00010, #e8002a, #c00010);
+  color: #ffffff;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.notice-bar-track {
+  display: inline-flex;
+  align-items: center;
+  animation: notice-scroll 18s linear infinite;
+  will-change: transform;
+}
+
+.notice-bar:hover .notice-bar-track {
+  animation-play-state: paused;
+}
+
+.notice-bar-text {
+  display: inline-block;
+  padding: 8px 30px 8px 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+@keyframes notice-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
 .submit-btn {
   width: 100%;
   border: none;
