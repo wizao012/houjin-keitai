@@ -55,6 +55,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
+<!-- 赤帯マーキー（流れるお知らせ） -->
+<div class="notice-bar" aria-label="お知らせ">
+  <div class="notice-bar-track">
+    <span class="notice-bar-text">法人・個人事業主様限定／お申し込みには各種書類が必要です</span>
+    <span class="notice-bar-text" aria-hidden="true">法人・個人事業主様限定／お申し込みには各種書類が必要です</span>
+    <span class="notice-bar-text" aria-hidden="true">法人・個人事業主様限定／お申し込みには各種書類が必要です</span>
+  </div>
+</div>
+
 <!-- FV -->
 <section class="fv">
   <!-- 背景画像 -->
@@ -165,14 +174,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </select>
     </div>
 
-    <div id="soleNotice" class="sole-notice" hidden>
-      <strong>【個人事業主の方へ】</strong>
-      <p>お申し込みには下記条件が必須となります。</p>
-      <ul>
-        <li>青色申告、または開業届の提出</li>
-        <li>固定電話番号の保有（携帯番号のみ不可）</li>
+    <!-- 個人事業主向け注意喚起 + 書類確認 -->
+    <div id="soleNotice" class="document-check sole-notice" hidden>
+      <div class="document-check-header">
+        <strong>📋 個人事業主の方へ</strong>
+      </div>
+      <p>通信契約には事業確認が必要なため、下記書類が必須となります。</p>
+      <ul class="document-list">
+        <li>青色申告書 または 開業届の控え</li>
+        <li>本人確認書類</li>
       </ul>
-      <p class="note">条件を満たさない場合、お申し込みをお受けできません。</p>
+      <p class="document-check-question">書類のご準備状況をお選びください</p>
+      <div class="document-check-options">
+        <label class="document-check-radio">
+          <input type="radio" name="doc_check_sole" value="yes" data-allow-submit="true">
+          <span>はい、青色申告書または開業届があります。（またはすぐに準備可能）</span>
+        </label>
+        <label class="document-check-radio">
+          <input type="radio" name="doc_check_sole" value="no" data-allow-submit="false">
+          <span>いいえ、書類はありません。</span>
+        </label>
+      </div>
+      <div class="document-check-deny" data-deny-for="sole" hidden>
+        ※書類のご提示が必須のため、お申し込みをお受けできません。<br>
+        　ご不明点があればお電話にてご相談ください：050-1791-6247
+      </div>
+    </div>
+
+    <!-- 法人系向け書類確認 -->
+    <div id="corpNotice" class="document-check corp-notice" hidden>
+      <div class="document-check-header">
+        <strong>📋 お申し込みに必要な書類</strong>
+      </div>
+      <p>通信契約には法人確認が必要なため、下記書類が必須となります。</p>
+      <ul class="document-list">
+        <li>履歴事項全部証明書（登記簿謄本）</li>
+        <li>本人確認書類</li>
+      </ul>
+      <p class="document-check-question">登記簿謄本のご準備状況をお選びください</p>
+      <div class="document-check-options">
+        <label class="document-check-radio">
+          <input type="radio" name="doc_check_corp" value="yes" data-allow-submit="true">
+          <span>はい、登記簿謄本を取得済です。（またはすぐに準備可能）</span>
+        </label>
+        <label class="document-check-radio">
+          <input type="radio" name="doc_check_corp" value="no" data-allow-submit="false">
+          <span>いいえ、書類はありません。</span>
+        </label>
+      </div>
+      <div class="document-check-deny" data-deny-for="corp" hidden>
+        ※登記簿謄本のご提示が必須のため、お申し込みをお受けできません。<br>
+        　お手元に書類がある場合は、お電話にてご相談ください：050-1791-6247
+      </div>
     </div>
 
     <div class="form-row">
