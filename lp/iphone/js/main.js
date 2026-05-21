@@ -86,14 +86,96 @@ if (telModal) {
   }
 }
 
-/* ---------- 個人事業主notice表示制御 ---------- */
+/* ---------- 会社形態 → 書類確認エリア表示制御 ---------- */
 const companyType = document.getElementById('companyType');
 const soleNotice = document.getElementById('soleNotice');
+const corpNotice = document.getElementById('corpNotice');
 
-if (companyType && soleNotice) {
+// 会社形態が変更されたら、該当する書類確認エリアを表示
+if (companyType) {
   companyType.addEventListener('change', function() {
-    soleNotice.hidden = companyType.value !== '個人事業主';
+    const value = companyType.value;
+    
+    // 法人系（株式会社・有限会社・その他営利法人）
+    const isCorp = ['株式会社', '有限会社', 'その他営利法人'].indexOf(value) !== -1;
+    // 個人事業主
+    const isSole = value === '個人事業主';
+    
+    if (soleNotice) {
+      soleNotice.hidden = !isSole;
+      // 非表示時はラジオボタンの選択をリセット
+      if (!isSole) {
+        const radios = soleNotice.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => r.checked = false);
+        const deny = soleNotice.querySelector('[data-deny-for="sole"]');
+        if (deny) deny.hidden = true;
+      }
+    }
+    
+    if (corpNotice) {
+      corpNotice.hidden = !isCorp;
+      if (!isCorp) {
+        const radios = corpNotice.querySelectorAll('input[type="radio"]');
+        radios.forEach(r => r.checked = false);
+        const deny = corpNotice.querySelector('[data-deny-for="corp"]');
+        if (deny) deny.hidden = true;
+      }
+    }
   });
+}
+
+// 書類確認のラジオボタンが変更されたら、「いいえ」選択時に注釈を表示
+function setupDocCheckRadios(noticeEl, denyKey) {
+  if (!noticeEl) return;
+  const radios = noticeEl.querySelectorAll('input[type="radio"]');
+  const deny = noticeEl.querySelector(`[data-deny-for="${denyKey}"]`);
+  
+  radios.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      const allowSubmit = radio.dataset.allowSubmit === 'true';
+      if (deny) deny.hidden = allowSubmit;
+    });
+  });
+}
+
+setupDocCheckRadios(soleNotice, 'sole');
+setupDocCheckRadios(corpNotice, 'corp');
+
+// 書類確認のバリデーション（送信時にチェック）
+function validateDocumentCheck() {
+  const value = companyType ? companyType.value : '';
+  const isCorp = ['株式会社', '有限会社', 'その他営利法人'].indexOf(value) !== -1;
+  const isSole = value === '個人事業主';
+  
+  // 法人系の場合
+  if (isCorp && corpNotice) {
+    const checkedRadio = corpNotice.querySelector('input[type="radio"]:checked');
+    if (!checkedRadio) {
+      alert('登記簿謄本のご準備状況をお選びください。');
+      corpNotice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    if (checkedRadio.dataset.allowSubmit === 'false') {
+      alert('登記簿謄本のご提示が必須のため、お申し込みをお受けできません。\nお手元に書類がある場合は、お電話にてご相談ください：050-1791-6247');
+      return false;
+    }
+  }
+  
+  // 個人事業主の場合
+  if (isSole && soleNotice) {
+    const checkedRadio = soleNotice.querySelector('input[type="radio"]:checked');
+    if (!checkedRadio) {
+      alert('書類のご準備状況をお選びください。');
+      soleNotice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    if (checkedRadio.dataset.allowSubmit === 'false') {
+      alert('書類のご提示が必須のため、お申し込みをお受けできません。\nご不明点があればお電話にてご相談ください：050-1791-6247');
+      return false;
+    }
+  }
+  
+  return true;
 }
 
 /* ==========================================================================
@@ -251,6 +333,11 @@ if (form && submitBtn) {
     // HTML5バリデーション
     if (!form.checkValidity()) {
       form.reportValidity();
+      return;
+    }
+
+    // 書類確認バリデーション（最優先）
+    if (!validateDocumentCheck()) {
       return;
     }
 
