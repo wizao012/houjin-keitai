@@ -618,7 +618,7 @@ html { scroll-behavior: smooth; }
 .notice-bar-track {
   display: inline-flex;
   align-items: center;
-  animation: notice-scroll 18s linear infinite;
+  animation: notice-scroll 8s linear infinite;
   will-change: transform;
 }
 
