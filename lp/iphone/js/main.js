@@ -3,6 +3,9 @@
    ========================================================================== */
 
 /* ---------- 設定 ---------- */
+// ▼▼ テスト用：true にすると常に「受付時間外」表示になります（本番前に false へ） ▼▼
+var FORCE_TEL_CLOSED = true;
+
 const CONFIG = {
   ZAPIER_WEBHOOK_URL: 'https://hooks.zapier.com/hooks/catch/12525485/4ydff70/',
   THANKS_PAGE: './thanks.html',
@@ -80,10 +83,84 @@ if (telModal) {
   // 電話番号タップ時にGTM計測
   const telCta = document.getElementById('telModalCta');
   if (telCta) {
-    telCta.addEventListener('click', function() {
+    telCta.addEventListener('click', function(e) {
+      if (!isTelOpenNow()) {
+        e.preventDefault();
+        closeTelModal();
+        openAfterHoursModal();
+        return;
+      }
       window.dataLayer.push({ event: 'tel_tap_cv' });
     });
   }
+}
+
+/* ---------- 営業時間判定（東京時間・平日9:00〜19:00） ---------- */
+function isTelOpenNow() {
+  if (FORCE_TEL_CLOSED) return false;
+  try {
+    // 端末のタイムゾーンに関係なく東京時間で判定
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Tokyo',
+      weekday: 'short',
+      hour: 'numeric',
+      hour12: false
+    }).formatToParts(new Date());
+    const wd = parts.find(p => p.type === 'weekday').value; // Mon...Sun
+    let hour = parseInt(parts.find(p => p.type === 'hour').value, 10);
+    if (hour === 24) hour = 0;
+    const isWeekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].indexOf(wd) !== -1;
+    return isWeekday && hour >= 9 && hour < 19;
+  } catch (e) {
+    return true; // 判定不能時は発信を許可
+  }
+}
+
+/* ---------- 時間外モーダル制御 ---------- */
+const afterHoursModal = document.getElementById('afterHoursModal');
+
+function openAfterHoursModal() {
+  if (!afterHoursModal) return;
+  afterHoursModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAfterHoursModal() {
+  if (!afterHoursModal) return;
+  afterHoursModal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+if (afterHoursModal) {
+  afterHoursModal.querySelectorAll('[data-close-afterhours]').forEach(function(el) {
+    el.addEventListener('click', closeAfterHoursModal);
+  });
+  const afterHoursFormBtn = document.getElementById('afterHoursFormBtn');
+  if (afterHoursFormBtn) {
+    afterHoursFormBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeAfterHoursModal();
+      const target = document.getElementById('contact-form');
+      if (target) {
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    });
+  }
+}
+
+/* ---------- FV電話CTAタップ計測 ---------- */
+const fvTelCta = document.getElementById('fvTelCta');
+if (fvTelCta) {
+  fvTelCta.addEventListener('click', function(e) {
+    if (!isTelOpenNow()) {
+      e.preventDefault();
+      openAfterHoursModal();
+      return;
+    }
+    window.dataLayer.push({ event: 'tel_tap_cv' });
+  });
 }
 
 /* ---------- 会社形態 → 書類確認エリア表示制御 ---------- */
@@ -156,7 +233,7 @@ function validateDocumentCheck() {
       return false;
     }
     if (checkedRadio.dataset.allowSubmit === 'false') {
-      alert('登記簿謄本のご提示が必須のため、お申し込みをお受けできません。\nお手元に書類がある場合は、お電話にてご相談ください：050-1791-6247');
+      alert('登記簿謄本のご提示が必須のため、お申し込みをお受けできません。\nご不明点があればお電話にてご相談ください：050-1791-6247');
       return false;
     }
   }
@@ -392,5 +469,6 @@ if (form && submitBtn) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (telModal && !telModal.hidden) closeTelModal();
+    if (afterHoursModal && !afterHoursModal.hidden) closeAfterHoursModal();
   }
 });
