@@ -261,6 +261,66 @@ html { scroll-behavior: smooth; }
 }
 
 /* ==========================================================================
+   電話CTA（FV見積もりボタン直下）
+   ========================================================================== */
+.phone-cta-wrap {
+  background: var(--navy);
+  padding: 4px 14px 16px;
+  text-align: center;
+}
+
+.phone-cta-lead {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+}
+
+.phone-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px 9px;
+  background: #fff;
+  border: 2px solid var(--gold);
+  border-radius: 999px;
+  padding: 9px 20px 10px;
+  box-shadow: 0 5px 14px rgba(6, 26, 58, 0.28);
+  color: var(--navy);
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.phone-cta:hover { filter: brightness(1.03); }
+.phone-cta:active { transform: translateY(1px); }
+
+.phone-cta-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--navy);
+}
+
+.phone-cta-numtext {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--navy);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+.phone-cta-sub {
+  flex-basis: 100%;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-gray);
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+/* ==========================================================================
    選ばれるポイント
    ========================================================================== */
 .benefits {
@@ -943,6 +1003,102 @@ html { scroll-behavior: smooth; }
   margin: 0;
 }
 
+/* 受付時間外モーダル（フォーム誘導） */
+.modal-card-afterhours {
+  text-align: center;
+  padding: 30px 22px 22px;
+}
+
+.afterhours-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--notice-bg);
+  border: 2px solid var(--notice-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-deep);
+}
+
+.afterhours-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.modal-card-afterhours h3 {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--navy);
+  margin: 0 0 8px;
+}
+
+.afterhours-hours {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--red);
+  background: #fff0f1;
+  border-radius: 999px;
+  padding: 4px 14px;
+  margin: 0 0 14px;
+}
+
+.afterhours-text {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-gray);
+  margin: 0 0 18px;
+}
+
+.afterhours-text strong {
+  color: var(--navy);
+  font-weight: 900;
+}
+
+.afterhours-form-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  background: linear-gradient(90deg, var(--red), var(--red-bright));
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 18px;
+  margin: 0 0 10px;
+  box-shadow: 0 8px 18px rgba(217, 0, 18, 0.32);
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.afterhours-form-btn:hover { filter: brightness(1.05); }
+.afterhours-form-btn:active { transform: translateY(1px); }
+
+.afterhours-form-sub {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.02em;
+}
+
+.afterhours-form-main {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.afterhours-close-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-gray);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  text-decoration: underline;
+}
+
+.afterhours-close-btn:hover { color: var(--navy); }
+
 /* フォームエラー表示 */
 .form-error {
   display: none;
@@ -1133,6 +1289,9 @@ html { scroll-behavior: smooth; }
     left: 0;
     width: 100%;
   }
+
+  .phone-cta-numtext { font-size: 25px; }
+  .phone-cta-icon { width: 23px; height: 23px; }
 
   .benefits {
     padding: 0 10px 16px;
