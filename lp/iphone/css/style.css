@@ -807,10 +807,12 @@ html { scroll-behavior: smooth; }
 }
 
 .footer-logo {
-  height: 20px;
-  width: auto;
+  width: 190px;
+  height: auto;
+  padding: 5px 8px;
   margin: 0 auto 12px;
-  filter: brightness(0) invert(1);
+  background: #fff;
+  border-radius: 8px;
 }
 
 .footer-nav {
