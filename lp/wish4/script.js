@@ -1,17 +1,17 @@
 (() => {
   'use strict';
 
-  const businessType = document.querySelector('#business-type');
-  const documentCheck = document.querySelector('#document-check');
-  const documentCopy = document.querySelector('#document-copy');
-  const documentYes = document.querySelector('#document-yes');
-  const documentDeny = document.querySelector('#document-deny');
+  const businessType = document.querySelector('#companyType');
+  const documentCheck = document.querySelector('#docCheck');
+  const documentCopy = document.querySelector('#docCopy');
+  const documentYes = document.querySelector('#docYes');
+  const documentDeny = document.querySelector('#docDeny');
   const documentRadios = [...document.querySelectorAll('[data-document-radio]')];
   const form = document.querySelector('.form');
   const submitButton = document.querySelector('#submitBtn');
-  const formError = document.querySelector('#form-error');
-  const modal = document.querySelector('#after-hours-modal');
-  const modalPanel = modal?.querySelector('.modal__panel');
+  const formError = document.querySelector('#formError');
+  const modal = document.querySelector('#afterHoursModal');
+  const modalPanel = modal?.querySelector('.modal-panel');
   let lastFocusedElement = null;
 
   const config = {
@@ -19,6 +19,108 @@
     thanksPage: './thanks.html',
     trackingKeys: ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'placement', 'keyword', 'matchtype', 'gclid', 'fbclid', 'lpv', 'src', 'camp', 'ag', 'ad', 'pl', 'kw', 'mt']
   };
+
+  /* ---------- 入力バリデーション（iPhone LPと共通仕様） ---------- */
+  const companyNameInput = document.querySelector('#companyName');
+  const contactNameInput = document.querySelector('#contactName');
+
+  const CARRIER_PATTERNS = [
+    'au', 'kddi',
+    'docomo', 'ドコモ', 'どこも',
+    'softbank', 'ソフトバンク', 'そふとばんく',
+    'rakuten', 'rakutenmobile', '楽天', '楽天モバイル',
+    'ahamo', 'アハモ',
+    'ymobile', 'ワイモバイル',
+    'mineo', 'マイネオ',
+    'uqmobile', 'uq', 'ユーキュー', 'ユーキューモバイル',
+    'linemo', 'ラインモ',
+    'povo', 'ポヴォ', 'ポボ',
+    'biglobe', 'biglobemobile',
+    'iijmio', 'iij',
+    'nuromobile', 'nuro',
+    'ocnmobile', 'ocn',
+    'jcom', 'jcommobile',
+    'lineモバイル', 'linemobile'
+  ];
+
+  function normalizeCarrierInput(value) {
+    return value
+      .toLowerCase()
+      .replace(/[０-９ａ-ｚＡ-Ｚ]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+      .replace(/[\s\u3000・\-_。、,.]/g, '');
+  }
+
+  function isCarrierName(value) {
+    if (!value) return false;
+    return CARRIER_PATTERNS.indexOf(normalizeCarrierInput(value)) !== -1;
+  }
+
+  function containsJapanese(value) {
+    if (!value) return false;
+    return /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF61-\uFF9F]/.test(value);
+  }
+
+  function showFieldError(fieldId, message) {
+    const input = document.querySelector(`#${fieldId}`);
+    const err = document.querySelector(`#err-${fieldId}`);
+    if (input) {
+      input.classList.add('error');
+      input.setAttribute('aria-invalid', 'true');
+    }
+    if (err) {
+      err.textContent = message;
+      err.classList.add('show');
+    }
+  }
+
+  function clearFieldError(fieldId) {
+    const input = document.querySelector(`#${fieldId}`);
+    const err = document.querySelector(`#err-${fieldId}`);
+    if (input) {
+      input.classList.remove('error');
+      input.removeAttribute('aria-invalid');
+    }
+    if (err) {
+      err.textContent = '';
+      err.classList.remove('show');
+    }
+  }
+
+  function validateCompanyName(input) {
+    const value = input.value.trim();
+    clearFieldError('companyName');
+    if (!value) return true;
+    if (isCarrierName(value)) {
+      showFieldError('companyName', '携帯キャリア名が入力されているようです。お客様の会社名・屋号をご入力ください。');
+      return false;
+    }
+    return true;
+  }
+
+  function validateContactName(input) {
+    const value = input.value.trim();
+    clearFieldError('contactName');
+    if (!value) return true;
+    if (!containsJapanese(value)) {
+      showFieldError('contactName', 'お名前は日本語（漢字・ひらがな・カタカナ）でご入力ください。');
+      return false;
+    }
+    return true;
+  }
+
+  function validateInputFormats() {
+    let isValid = true;
+    if (companyNameInput && !validateCompanyName(companyNameInput)) isValid = false;
+    if (contactNameInput && !validateContactName(contactNameInput)) isValid = false;
+    if (!isValid) {
+      const firstError = form.querySelector('.field input.error');
+      if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstError.focus({ preventScroll: true });
+      }
+    }
+    return isValid;
+  }
 
   function captureTrackingParameters() {
     const params = new URLSearchParams(window.location.search);
@@ -33,17 +135,19 @@
   function updateDocumentQuestion() {
     const type = businessType.value;
     const isSoleProprietor = type === '個人事業主';
-    const hasBusinessType = type !== '';
+    // 法人系（iPhone LPと同一の列挙。その他非営利法人は書類確認の対象外）
+    const isCorporate = ['株式会社', '有限会社', 'その他営利法人'].indexOf(type) !== -1;
+    const needsDocumentCheck = isSoleProprietor || isCorporate;
 
-    documentCheck.hidden = !hasBusinessType;
+    documentCheck.hidden = !needsDocumentCheck;
     documentDeny.hidden = true;
     documentRadios.forEach((radio) => {
-      radio.required = hasBusinessType;
+      radio.required = needsDocumentCheck;
       radio.checked = false;
       radio.name = isSoleProprietor ? 'doc_check_sole' : 'doc_check_corp';
     });
 
-    if (!hasBusinessType) return;
+    if (!needsDocumentCheck) return;
 
     if (isSoleProprietor) {
       documentCopy.innerHTML = '通信契約には事業確認が必要なため、下記書類が必須となります。<br><strong>● 青色申告書 または 開業届の控え<br>● 本人確認書類</strong>';
@@ -83,6 +187,9 @@
     }
 
     documentDeny.hidden = true;
+
+    if (!validateInputFormats()) return;
+
     submitButton.disabled = true;
     const originalButton = submitButton.innerHTML;
     submitButton.textContent = '送信中...';
@@ -90,7 +197,7 @@
     try {
       await fetch(config.webhookUrl, { method: 'POST', mode: 'no-cors', body: new FormData(form) });
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'form_submit_cv', form_name: 'aquos_wish4_lp' });
+      window.dataLayer.push({ event: 'form_submit_cv' });
       window.location.href = config.thanksPage;
     } catch (error) {
       submitButton.disabled = false;
@@ -114,7 +221,7 @@
     lastFocusedElement = trigger;
     modal.hidden = false;
     document.body.classList.add('modal-open');
-    requestAnimationFrame(() => modal.querySelector('.modal__close').focus());
+    requestAnimationFrame(() => modal.querySelector('.modal-close').focus());
   }
 
   function closeModal() {
@@ -123,6 +230,15 @@
     document.body.classList.remove('modal-open');
     lastFocusedElement?.focus();
   }
+
+  companyNameInput?.addEventListener('blur', () => validateCompanyName(companyNameInput));
+  companyNameInput?.addEventListener('input', () => {
+    if (companyNameInput.classList.contains('error')) validateCompanyName(companyNameInput);
+  });
+  contactNameInput?.addEventListener('blur', () => validateContactName(contactNameInput));
+  contactNameInput?.addEventListener('input', () => {
+    if (contactNameInput.classList.contains('error')) validateContactName(contactNameInput);
+  });
 
   businessType?.addEventListener('change', updateDocumentQuestion);
   form?.addEventListener('submit', submitForm);
@@ -142,7 +258,7 @@
         openModal(link);
       } else {
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'phone_click', phone_number: '050-1791-6247' });
+        window.dataLayer.push({ event: 'tel_tap_cv' });
       }
     });
   });
