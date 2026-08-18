@@ -4,7 +4,7 @@
 
 /* ---------- 設定 ---------- */
 // ▼▼ テスト用：true にすると常に「受付時間外」表示になります（本番前に false へ） ▼▼
-var FORCE_TEL_CLOSED = true;
+var FORCE_TEL_CLOSED = false;
 
 const CONFIG = {
   ZAPIER_WEBHOOK_URL: 'https://hooks.zapier.com/hooks/catch/12525485/4ydff70/',
