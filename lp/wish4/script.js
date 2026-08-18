@@ -213,7 +213,7 @@
     const values = Object.fromEntries(japanParts.map((part) => [part.type, part.value]));
     const weekday = values.weekday;
     const minutes = Number(values.hour) * 60 + Number(values.minute);
-    return !['Sat', 'Sun'].includes(weekday) && minutes >= 9 * 60 && minutes < 19 * 60;
+    return !['Sat', 'Sun'].includes(weekday) && minutes >= 9 * 60 && minutes < 18 * 60;
   }
 
   function openModal(trigger) {

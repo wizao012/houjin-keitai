@@ -95,7 +95,7 @@ if (telModal) {
   }
 }
 
-/* ---------- 営業時間判定（東京時間・平日9:00〜19:00） ---------- */
+/* ---------- 営業時間判定（東京時間・平日9:00〜18:00） ---------- */
 function isTelOpenNow() {
   if (FORCE_TEL_CLOSED) return false;
   try {
@@ -110,7 +110,7 @@ function isTelOpenNow() {
     let hour = parseInt(parts.find(p => p.type === 'hour').value, 10);
     if (hour === 24) hour = 0;
     const isWeekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].indexOf(wd) !== -1;
-    return isWeekday && hour >= 9 && hour < 19;
+    return isWeekday && hour >= 9 && hour < 18;
   } catch (e) {
     return true; // 判定不能時は発信を許可
   }
